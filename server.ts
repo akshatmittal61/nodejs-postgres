@@ -1,12 +1,17 @@
-const express = require("express");
+import express from "express";
 import { Request, Response } from "express";
+import { PORT } from "./config";
+import * as db from "./db";
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => {
-	res.send("Hello world!");
+app.get("/", async (req: Request, res: Response) => {
+	// const result = await db.client.query("SELECT $1::text as name", ["brianc"]);
+	const result = await db.client.query("SELECT * FROM user");
+	return res.status(200).json(result.rows);
 });
 
-app.listen(3000, () => {
-	console.log("Server started on port 3000");
+app.listen(PORT, () => {
+	db.connect();
+	console.log(`Server is listening on port ${PORT}`);
 });
