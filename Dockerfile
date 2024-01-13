@@ -4,8 +4,7 @@ ENV NODE_ENV=production
 ENV APP_ROOT=/app
 
 WORKDIR ${APP_ROOT}
-ADD . ${APP_ROOT}
-COPY .env package.json ${APP_ROOT}
+COPY .env package.json ./
 
 ARG PORT
 
@@ -38,6 +37,6 @@ ENV POSTGRES_PORT=${DB_PORT}
 EXPOSE ${PORT}
 RUN yarn
 
-COPY . ${APP_ROOT}
+COPY . .
 
 CMD ["yarn", "start"]
