@@ -2,10 +2,10 @@ FROM node:20
 
 ENV NODE_ENV=production
 ENV APP_ROOT=/app
+ENV PATH=${APP_ROOT}/node_modules/.bin:${PATH}
 
 RUN mkdir -p ${APP_ROOT}
 WORKDIR ${APP_ROOT}
-ADD . ${APP_ROOT}
 COPY package.json ${APP_ROOT}/
 
 ARG PORT
