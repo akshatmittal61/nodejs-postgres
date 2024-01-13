@@ -12,3 +12,4 @@ services:
       - .env
     volumes:
       - ./initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    command: "psql -U \"$POSTGRES_USER\" -d \"$POSTGRES_PASSWORD\" -a -f /docker-entrypoint-initdb.d/initdb.sql"
