@@ -5,7 +5,7 @@ ENV APP_ROOT=/app
 
 WORKDIR ${APP_ROOT}
 ADD . ${APP_ROOT}
-COPY package.json ${APP_ROOT}
+COPY .env package.json ${APP_ROOT}
 
 ARG PORT
 
