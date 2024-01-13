@@ -60,3 +60,17 @@ export const remove = async (id: number | string) => {
         console.error(error);
     }
 };
+
+export const search = async (query: string) => {
+    try {
+        const res = await db.query(
+            "SELECT * FROM blogs WHERE title ILIKE $1 OR body ILIKE $1 OR author ILIKE $1",
+            [`%${query}%`]
+        );
+        return res.rows;
+    }
+    catch (error) {
+        console.error(`Error searching blogs for ${query}`);
+        console.error(error);
+    }
+}

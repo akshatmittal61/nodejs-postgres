@@ -7,6 +7,9 @@ router
 	.route("/")
 	.get(blogsController.getAllBlogs)
 	.post(blogsController.createBlog);
+
+router.route("/search").get(blogsController.searchBlogs);
+
 router
 	.route("/:id")
 	.get(blogsController.getBlogById)
