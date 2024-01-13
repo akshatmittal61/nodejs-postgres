@@ -5,7 +5,7 @@ config();
 class ConfigService {
 	constructor(private env: { [k: string]: string | undefined }) {}
 
-    public get(key: string): string {
+	public get(key: string): string {
 		if (!this.env[key]) {
 			throw new Error(`Key ${key} not found in environment`);
 		}
@@ -37,9 +37,9 @@ export default configService;
 export const PORT = configService.getNumber("PORT");
 
 export const db = {
-	host: configService.get("DB_HOST"),
-	port: configService.getNumber("DB_PORT"),
-	username: configService.get("DB_USERNAME"),
-	password: configService.get("DB_PASSWORD"),
-	database: configService.get("DB_DATABASE"),
+	host: configService.get("POSTGRES_HOST"),
+	port: configService.getNumber("POSTGRES_PORT"),
+	username: configService.get("POSTGRES_USERNAME"),
+	password: configService.get("POSTGRES_PASSWORD"),
+	database: configService.get("POSTGRES_DATABASE"),
 };
