@@ -38,4 +38,6 @@ ENV POSTGRES_PORT=${DB_PORT}
 EXPOSE ${PORT}
 RUN yarn
 
+COPY . ${APP_ROOT}
+
 CMD ["yarn", "start"]
