@@ -37,6 +37,5 @@ ENV POSTGRES_PORT=${DB_PORT}
 
 EXPOSE ${PORT}
 RUN yarn
-RUN yarn build
 
 CMD ["yarn", "start"]
