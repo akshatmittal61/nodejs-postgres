@@ -3,7 +3,9 @@ version: '3'
 services:
   # PostgreSQL service
   db:
-    image: postgres:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.db
     ports:
       - "5432:5432"  # Map the database's port to the host machine
     env_file:
