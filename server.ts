@@ -1,6 +1,8 @@
 import express, { Request, Response } from "express";
 import { PORT } from "./config";
 import { db } from "./db";
+import { initDb } from "./db/init";
+import routes from "./routes";
 
 const app = express();
 
@@ -13,7 +15,10 @@ app.get("/", async (req: Request, res: Response) => {
 	return res.status(200).json(result.rows);
 });
 
+app.use("/api/v1", routes);
+
 app.listen(PORT, () => {
 	db.connect();
+	initDb();
 	console.log(`Server is listening on port ${PORT}`);
 });
