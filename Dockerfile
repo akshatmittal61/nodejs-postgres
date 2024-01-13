@@ -2,9 +2,9 @@ FROM node:20
 
 ENV NODE_ENV=production
 ENV APP_ROOT=/app
-ENV PATH=${APP_ROOT}/node_modules/.bin:${PATH}
 
 RUN mkdir -p ${APP_ROOT}
+RUN mkdir -p ${APP_ROOT}/docker-entrypoint-initdb.d
 WORKDIR ${APP_ROOT}
 COPY package.json ${APP_ROOT}/
 
@@ -40,5 +40,6 @@ EXPOSE ${PORT}
 RUN yarn
 
 COPY . .
+COPY ./config/initdb.sql ${APP_ROOT}/docker-entrypoint-initdb.d/
 
 CMD ["yarn", "start"]
