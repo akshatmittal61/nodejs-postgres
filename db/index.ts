@@ -1,30 +1,76 @@
-import { Client } from "pg";
-import { db } from "../config";
+import { Pool, QueryResult } from "pg";
+import { db as dbCredentials } from "../config";
 
-const client = new Client({
-	host: db.host,
-	port: db.port,
-	user: db.username,
-	password: db.password,
-	database: db.database,
-});
+export interface DbCredentials {
+	host: string;
+	port: number;
+	username: string;
+	password: string;
+	database: string;
+}
 
-const connect = async () => {
-	try {
-        await client.connect();
-        console.info("Connected to database");
-	} catch (err) {
-        console.error("Error connecting to database", err);
+let pool: Pool;
+
+export const getDatabaseConnectionPool = (credentials: DbCredentials): Pool => {
+	if (pool) {
+		return pool;
 	}
+	const newPool = new Pool({
+		host: credentials.host,
+		port: credentials.port,
+		user: credentials.username,
+		password: credentials.password,
+		database: credentials.database,
+		max: 20,
+		idleTimeoutMillis: 30000,
+		connectionTimeoutMillis: 2000,
+	});
+
+	return newPool;
 };
 
-const disconnect = async () => {
-	try {
-        await client.end();
-        console.info("Disconnected from database");
-	} catch (err) {
-		console.error("Error disconnecting from database", err);
+export class PostgresDatabaseManager {
+	constructor(credentials: DbCredentials) {
+		pool = getDatabaseConnectionPool(credentials);
 	}
-};
 
-export { connect, disconnect, client };
+	// declare destrcutor to disconnect from database
+	// when the instance is destroyed
+
+	public async connect(): Promise<void> {
+		try {
+			await pool.connect();
+			console.info("Connected to database");
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	public async disconnect(): Promise<void> {
+		try {
+			await pool.end();
+			console.info("Disconnected from database");
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	public async query(text: string, params: any[] = []): Promise<QueryResult> {
+		try {
+			const start = Date.now();
+			const result = await pool.query(text, params);
+			const duration = Date.now() - start;
+			console.info("Executed query:", {
+				text,
+				duration,
+				rows: result.rowCount,
+			});
+			return result;
+		} catch (error) {
+			console.error(error);
+			throw error;
+		}
+	}
+}
+
+export const db = new PostgresDatabaseManager(dbCredentials);
