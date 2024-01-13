@@ -4,7 +4,7 @@ ENV NODE_ENV=production
 ENV APP_ROOT=/app
 
 RUN mkdir -p ${APP_ROOT}
-RUN mkdir -p ${APP_ROOT}/docker-entrypoint-initdb.d
+RUN mkdir -p /docker-entrypoint-initdb.d
 WORKDIR ${APP_ROOT}
 COPY package.json ${APP_ROOT}/
 
