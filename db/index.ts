@@ -1,5 +1,6 @@
 import { Pool, QueryResult } from "pg";
 import { db as dbCredentials } from "../config";
+import log from "../log";
 
 export interface DbCredentials {
 	host: string;
@@ -40,18 +41,18 @@ export class PostgresDatabaseManager {
 	public async connect(): Promise<void> {
 		try {
 			await pool.connect();
-			console.info("Connected to database");
-		} catch (error) {
-			console.error(error);
+			log.info("Connected to database");
+		} catch (error: any) {
+			log.error(error);
 		}
 	}
 
 	public async disconnect(): Promise<void> {
 		try {
 			await pool.end();
-			console.info("Disconnected from database");
-		} catch (error) {
-			console.error(error);
+			log.info("Disconnected from database");
+		} catch (error: any) {
+			log.error(error);
 		}
 	}
 
@@ -60,14 +61,10 @@ export class PostgresDatabaseManager {
 			const start = Date.now();
 			const result = await pool.query(text, params);
 			const duration = Date.now() - start;
-			console.info("Executed query:", {
-				text,
-				duration,
-				rows: result.rowCount,
-			});
+			log.info(`Executed query: ${text} in ${duration}ms`);
 			return result;
-		} catch (error) {
-			console.error(error);
+		} catch (error: any) {
+			log.error(error);
 			throw error;
 		}
 	}

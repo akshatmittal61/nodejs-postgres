@@ -1,4 +1,5 @@
 import { db } from ".";
+import log from "../log";
 
 export const initDb = async () => {
     try {
@@ -11,10 +12,10 @@ export const initDb = async () => {
                 created_at TIMESTAMPTZ DEFAULT NOW()
             )`
         );
-        console.info("Table created successfully");
+        log.info("Table created successfully");
         return res;
-    } catch (error) {
-        console.error("Error connecting to database");
-        console.error(error);
+    } catch (error: any) {
+        log.error("Error connecting to database");
+        log.error(error);
     }
 };

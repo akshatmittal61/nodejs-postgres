@@ -1,13 +1,14 @@
 import { db } from "../db";
+import log from "../log";
 
 export const findAll = async () => {
     try {
         const res = await db.query("SELECT * FROM blogs");
         return res.rows;
     }
-    catch (error) {
-        console.error("Error finding blogs");
-        console.error(error);
+    catch (error: any) {
+        log.error("Error finding blogs");
+        log.error(error);
     }
 };
 
@@ -16,9 +17,9 @@ export const findById = async (id: number | string) => {
         const res = await db.query("SELECT * FROM blogs WHERE id = $1", [id]);
         return res.rows[0];
     }
-    catch (error) {
-        console.error(`Error finding blog with id ${id}`);
-        console.error(error);
+    catch (error: any) {
+        log.error(`Error finding blog with id ${id}`);
+        log.error(error);
     }
 };
 
@@ -30,9 +31,9 @@ export const create = async (title: string, body: string, author: string) => {
         );
         return res.rows[0];
     }
-    catch (error) {
-        console.error("Error creating blog");
-        console.error(error);
+    catch (error: any) {
+        log.error("Error creating blog");
+        log.error(error);
     }
 };
 
@@ -44,9 +45,9 @@ export const update = async (id: number | string, title: string, body: string, a
         );
         return res.rows[0];
     }
-    catch (error) {
-        console.error(`Error updating blog with id ${id}`);
-        console.error(error);
+    catch (error: any) {
+        log.error(`Error updating blog with id ${id}`);
+        log.error(error);
     }
 };
 
@@ -55,9 +56,9 @@ export const remove = async (id: number | string) => {
         const res = await db.query("DELETE FROM blogs WHERE id = $1", [id]);
         return res.rows[0];
     }
-    catch (error) {
-        console.error(`Error deleting blog with id ${id}`);
-        console.error(error);
+    catch (error: any) {
+        log.error(`Error deleting blog with id ${id}`);
+        log.error(error);
     }
 };
 
@@ -69,8 +70,8 @@ export const search = async (query: string) => {
         );
         return res.rows;
     }
-    catch (error) {
-        console.error(`Error searching blogs for ${query}`);
-        console.error(error);
+    catch (error: any) {
+        log.error(`Error searching blogs for ${query}`);
+        log.error(error);
     }
 }
